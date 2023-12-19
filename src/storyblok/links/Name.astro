@@ -1,0 +1,24 @@
+---
+import { storyblokEditable } from "@storyblok/astro";
+
+const { blok } = Astro.props;
+---
+
+<section {...storyblokEditable(blok)}>
+  <div
+    class="flex items-center flex-col m-4 bg-base text-center text-sans gap-8"
+  >
+    <div class="flex items-baseline gap-1">
+      <p class="text-5xl font-sans font-black text-accent tracking-wide">
+        PEEP
+      </p>
+      <p class="text-3xl font-serif italic tracking-wide">the</p>
+      <p class="text-5xl font-sans font-black text-accent tracking-wide">
+        KICKS
+      </p>
+    </div>
+    <div class="flex flex-col">
+      <p class="text-lg">{blok.description}</p>
+    </div>
+  </div>
+</section>

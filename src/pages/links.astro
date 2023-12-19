@@ -1,0 +1,16 @@
+---
+import { useStoryblokApi } from "@storyblok/astro";
+import StoryblokComponent from "@storyblok/astro/StoryblokComponent.astro";
+import LinksLayout from "../layouts/LinksLayout.astro";
+
+const storyblokApi = useStoryblokApi();
+const { data } = await storyblokApi.get("cdn/stories/links", {
+  version: "published",
+});
+
+const story = data.story;
+---
+
+<LinksLayout>
+  <StoryblokComponent blok={story.content} />
+</LinksLayout>

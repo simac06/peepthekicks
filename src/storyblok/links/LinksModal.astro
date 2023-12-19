@@ -1,0 +1,178 @@
+---
+import { ClipboardCopy } from "@astro-github-elements/clipboard-copy";
+import { Icon } from "astro-icon";
+
+const { shortURL } = Astro.props;
+
+const socialShare = [
+  {
+    platform: "Snapchat",
+    icon: "snapchat",
+    customCSS: "snapchat-share-button",
+  },
+  {
+    platform: "X",
+    icon: "twitter",
+    shareLink: `https://x.com/intent/tweet?url=${shortURL}`,
+  },
+  {
+    platform: "Facebook",
+    icon: "facebook",
+    shareLink: `https://www.facebook.com/share.php?u=${shortURL}`,
+  },
+  { platform: "Messenger", icon: "facebook-messenger" },
+  { platform: "Email", icon: "envelope" },
+];
+
+const randomId = function (length = 6) {
+  return Math.random()
+    .toString(36)
+    .substring(2, length + 2);
+};
+
+const uniqueIDNum = randomId();
+
+const uniqueID = `modal${uniqueIDNum}`;
+---
+
+<script>
+  // TO DO SHARE API AHHHHH
+  const shortURL = document.getElementById("shortLink").dataset.message;
+
+  document.getElementById("shareAPIbtn").addEventListener("click", async () => {
+    try {
+      await navigator.share({
+        title: "Test",
+        text: "This is a test share",
+        url: shortURL,
+      });
+    } catch (err) {
+      console.error("Error sharing:", err);
+    }
+  });
+
+  document.addEventListener("clipboard-copy", function (event) {
+    const button = event.target as HTMLElement;
+    button.classList.toggle("btn-success");
+    button.classList.toggle("btn-outline");
+
+    const firstChild = button.firstElementChild as HTMLElement | null;
+    if (firstChild) {
+      firstChild.classList.toggle("hidden");
+    }
+
+    const secondChild = button.children[1] as HTMLElement | undefined;
+    if (secondChild) {
+      secondChild.classList.toggle("hidden");
+    }
+
+    setTimeout(() => {
+      button.classList.toggle("btn-success");
+      button.classList.toggle("btn-outline");
+
+      if (firstChild) {
+        firstChild.classList.toggle("hidden");
+      }
+
+      if (secondChild) {
+        secondChild.classList.toggle("hidden");
+      }
+    }, 1000);
+  });
+</script>
+
+<div
+  onclick=`window.${uniqueID}.showModal()`
+  class="h-full w-full flex justify-center items-center cursor-pointer"
+>
+  <Icon pack="fa-solid" name="ellipsis-h" size="1rem" />
+</div>
+<dialog id={uniqueID} class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box max-h-[75vh]">
+    <div class="flex flex-col gap-8">
+      <h1 class="font-bold text-2xl">Share This Link</h1>
+      <div class="flex flex-col gap-12">
+        <ClipboardCopy
+          value={shortURL}
+          class="btn btn-block btn-outline transition-all"
+          id="copyBtn"
+        >
+          <div class="flex justify-between w-full transition-all">
+            <div class="flex gap-2">
+              <Icon pack="fa-solid" name="link" size="1rem" />
+              <p data-message={shortURL} id="shortLink">{shortURL}</p>
+            </div>
+            <div class="flex gap-2">
+              <p>Copy</p>
+              <Icon pack="fa-solid" name="copy" size="1rem" />
+            </div>
+          </div>
+
+          <div class="hidden transition-all">Copied!</div>
+        </ClipboardCopy>
+
+        <div class="flex gap-12 flex-col">
+          {
+            socialShare.map((item) => (
+              <>
+                <a
+                  target="_blank"
+                  class:list={[
+                    `cursor-pointer justify-start`,
+                    `${item.customCSS ? item.customCSS : ""}`,
+                  ]}
+                  {...(item.platform === "Snapchat"
+                    ? { "data-share-url": shortURL }
+                    : { href: item.shareLink })}
+                >
+                  <div class="flex gap-4">
+                    <Icon
+                      pack={
+                        item.platform === "Email" ? "fa-solid" : "fa-brands"
+                      }
+                      name={item.icon}
+                      size="2rem"
+                    />
+                    <h1 class="text-xl">
+                      Share{" "}
+                      {item.platform === "Email" ||
+                      item.platform === "Messenger"
+                        ? "via"
+                        : "on"}{" "}
+                      {item.platform}
+                    </h1>
+                  </div>
+                </a>
+              </>
+            ))
+          }
+          <button id="shareAPIbtn" class="cursor-pointer"
+            >More Share Options</button
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button class="btn-accent">close</button>
+  </form>
+</dialog>
+
+<script define:vars="">
+  // Load the SDK asynchronously
+  (function (d, s, id) {
+    var js,
+      sjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://sdk.snapkit.com/js/v1/create.js";
+    sjs.parentNode.insertBefore(js, sjs);
+  })(document, "script", "snapkit-creative-kit-sdk");
+
+  window.snapKitInit = function () {
+    snap.creativekit.initalizeShareButtons(
+      document.getElementsByClassName("snapchat-share-button")
+    );
+  };
+</script>

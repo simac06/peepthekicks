@@ -1,0 +1,13 @@
+---
+import { storyblokEditable } from "@storyblok/astro";
+
+import { Icon } from "astro-icon";
+
+const { blok } = Astro.props;
+---
+
+<div {...storyblokEditable(blok)} class="pb-8">
+  <a href={blok.socialLink.url} target="_blank">
+    <Icon pack="fa-brands" name={blok.icon} class="w-3/4" />
+  </a>
+</div>

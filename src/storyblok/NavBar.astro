@@ -1,0 +1,66 @@
+---
+
+---
+
+<div class="navbar bg-base-200">
+  <div class="navbar-start">
+    <a class="btn btn-ghost">
+      <div class="flex items-baseline gap-1">
+        <p class="text-3xl font-sans font-black text-accent tracking-wide">
+          PEEP
+        </p>
+        <p class="text-xl font-serif tracking-wide">the</p>
+        <p class="text-3xl font-sans font-black text-accent tracking-wide">
+          KICKS
+        </p>
+      </div>
+    </a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      <li><a>Item 1</a></li>
+      <li>
+        <details>
+          <summary>Parent</summary>
+          <ul class="p-2">
+            <li><a>Submenu 1</a></li>
+            <li><a>Submenu 2</a></li>
+          </ul>
+        </details>
+      </li>
+      <li><a>Item 3</a></li>
+    </ul>
+  </div>
+  <div class="navbar-end">
+    <div class="drawer drawer-end justify-end">
+      <input type="checkbox" id="navDrawer" class="drawer-toggle" />
+      <div class="drawer-content">
+        <label
+          for="navDrawer"
+          aria-label="open sidebar"
+          class="btn btn-square btn-ghost"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="inline-block w-6 h-6 stroke-current z-50"
+            ><path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"></path></svg
+          >
+        </label>
+      </div>
+      <div class="drawer-side z-40">
+        <label for="navDrawer" aria-label="close drawer" class="drawer-overlay"
+        ></label>
+        <ul class="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+          <li>Menu Item</li>
+          <li>Menu Item</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
